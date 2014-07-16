@@ -14,14 +14,27 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 #process.load("Configuration.StandardSequences.Geometry_cff") #old one, to use for old releases
 #process.load("Configuration.Geometry.GeometryIdeal_cff") #new one
 
-process.load('Configuration.Geometry.GeometryExtended2023_cff')
-process.load('Configuration.Geometry.GeometryExtended2023Reco_cff')
+process.load('Configuration.Geometry.GeometryExtended2019Reco_cff')
+process.load('Configuration.Geometry.GeometryExtended2019_cff')   # for DES19_62_V8
+
+
+#process.load('Configuration.Geometry.GeometryExtended2023_cff')
+#process.load('Configuration.Geometry.GeometryExtended2023Reco_cff')
+
+#process.load('Configuration.Geometry.GeometryExtended2017Reco_cff')
+#process.load('Configuration.Geometry.GeometryExtended2017_cff')
+
+#process.load('Configuration.Geometry.GeometryExtended2023MuonReco_cff')
+#process.load('Configuration.Geometry.GeometryExtended2023Muon_cff')
+
 
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("Configuration.StandardSequences.Reconstruction_cff")
 
-#process.GlobalTag.globaltag = cms.string("START53_V26::All")
-process.GlobalTag.globaltag = cms.string("DES19_62_V8::All")
+
+process.GlobalTag.globaltag = cms.string("DES19_62_V8::All")  #phase1 samples no ag
+#process.GlobalTag.globaltag = cms.string("PH1_1K_FB_V1::All") 
+#process.GlobalTag.globaltag = cms.string("PH2_1K_FB_V2::All") #phase 2 samples
 
 
 ##To use the newest training!
@@ -38,6 +51,25 @@ process.GlobalTag.globaltag = cms.string("DES19_62_V8::All")
 #       BlobStreamerName = cms.untracked.string('TBufferBlobStreamingService')
 #)
 #process.es_prefer_BTauMVAJetTagComputerRecord = cms.ESPrefer("PoolDBESSource","BTauMVAJetTagComputerRecord")
+
+#select good primary vertex
+from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
+process.goodOfflinePrimaryVertices = cms.EDFilter(
+    "PrimaryVertexObjectFilter",
+    filterParams = pvSelector.clone( minNdof = cms.double(4.0), maxZ = cms.double(24.0) ),
+    src=cms.InputTag('offlinePrimaryVertices')
+    )
+
+## Load modules for primary vertex sorting
+process.load("RecoVertex.PrimaryVertexSorter.sortedOfflinePrimaryVertices_cff")
+process.ak5CaloJetTracksAssociatorAtVertexR04.jets = cms.InputTag("ak5GenJets") 
+#process.impactParameterTagInfosForPVSorting = process.impactParameterTagInfos.clone(
+#	primaryVertex = cms.InputTag("goodOfflinePrimaryVertices") 
+#)
+process.impactParameterTagInfosForPVSorting.primaryVertex = cms.InputTag("goodOfflinePrimaryVertices") 
+process.sortedGoodOfflinePrimaryVertices = process.sortedOfflinePrimaryVertices.clone(
+    src = cms.InputTag('goodOfflinePrimaryVertices')
+) 
 
 from PhysicsTools.JetMCAlgos.AK5PFJetsMCPUJetID_cff import *
 process.selectedAK5PFGenJets = ak5GenJetsMCPUJetID.clone()
@@ -60,6 +92,11 @@ process.combinedSecondaryVertexV2.trackMultiplicityMin = cms.uint32(2)
 #for Inclusive Vertex Finder
 process.load('RecoVertex/AdaptiveVertexFinder/inclusiveVertexing_cff')
 process.load('RecoBTag/SecondaryVertex/inclusiveSecondaryVertexFinderTagInfos_cfi')
+
+process.impactParameterTagInfos.primaryVertex = cms.InputTag("sortedOfflinePrimaryVertices")
+process.inclusiveSecondaryVertexFinderTagInfos.trackSelection.qualityClass = cms.string('any')
+process.inclusiveVertexFinder.primaryVertices = cms.InputTag("sortedOfflinePrimaryVertices")
+process.trackVertexArbitrator.primaryVertices = cms.InputTag("sortedOfflinePrimaryVertices") 
 
 #for the flavour matching
 from PhysicsTools.JetMCAlgos.HadronAndPartonSelector_cfi import selectedHadronsAndPartons
@@ -87,7 +124,9 @@ process.source = cms.Source("PoolSource",
 #'/store/mc/Fall11/QCD_Pt-1000to1400_Tune4C_7TeV_pythia8/AODSIM/PU_S6_START44_V9B-v1/0000/14151191-9043-E111-BA90-003048C690A0.root',
 #'/store/mc/Fall11/QCD_Pt-1400to1800_Tune4C_7TeV_pythia8/AODSIM/PU_S6_START44_V9B-v1/0000/0E10C938-1146-E111-95AC-0025901D4A58.root',
 #'/store/mc/Fall11/QCD_Pt-1800_Tune4C_7TeV_pythia8/AODSIM/PU_S6_START44_V9B-v1/0000/0C4D9605-2544-E111-B39F-003048D4DF80.root',
-'/store/mc/Summer12_DR53X/TTJets_MassiveBinDECAY_TuneZ2star_8TeV-madgraph-tauola/AODSIM/PU_S10_START53_V7A-v1/0000/FED775BD-B8E1-E111-8ED5-003048C69036.root'
+#'/store/mc/Summer12_DR53X/TTJets_MassiveBinDECAY_TuneZ2star_8TeV-madgraph-tauola/AODSIM/PU_S10_START53_V7A-v1/0000/FED775BD-B8E1-E111-8ED5-003048C69036.root'
+'root://xrootd.unl.edu//store/mc/GEM2019Upg14DR/QCD_BBbar_Pt_15to500_Tune4C_FlatPtEta_14TeV_pythia8/AODSIM/PU50bx25_DES19_62_V8-v1/00000/083D4CB9-57DC-E311-AB86-0025905A6094.root'	
+
 	)
 )
 
@@ -118,7 +157,7 @@ process.combinedSVMVATrainer = cms.EDAnalyzer("JetTagMVAExtractor",
                 'CombinedSVV2PseudoVertex',
                 'CombinedSVV2NoVertex'),
 	categoryVariableName = cms.string('vertexCategory'), # vertexCategory = Reco,Pseudo,No
-	maximumPseudoRapidity = cms.double(2.5),
+	maximumPseudoRapidity = cms.double(5.0),  ###WAS 2.5
 	signalFlavours = cms.vint32(5, 7),
 	minimumPseudoRapidity = cms.double(0.0),
 	jetTagComputer = cms.string('combinedSecondaryVertexV2'),
@@ -127,18 +166,33 @@ process.combinedSVMVATrainer = cms.EDAnalyzer("JetTagMVAExtractor",
 	ignoreFlavours = cms.vint32(0)
 )
 
+#process.p = cms.Path(
+#process.selectedAK5PFGenJets*
+#process.matchedAK5PFGenJets *
+#process.inclusiveVertexing * 
+##process.inclusiveMergedVerticesFiltered * 
+##process.bToCharmDecayVertexMerged * 
+#process.myak5JetTracksAssociatorAtVertex * 
+#process.impactParameterTagInfos * 
+#process.inclusiveSecondaryVertexFinderTagInfos *
+#process.selectedHadronsAndPartons *
+#process.jetFlavourInfosAK5PFJets *
+#process.combinedSVMVATrainer 
+#)
+
 process.p = cms.Path(
 process.selectedAK5PFGenJets*
 process.matchedAK5PFGenJets *
-process.inclusiveVertexing * 
-#process.inclusiveMergedVerticesFiltered * 
-#process.bToCharmDecayVertexMerged * 
-process.myak5JetTracksAssociatorAtVertex * 
-process.impactParameterTagInfos * 
+process.goodOfflinePrimaryVertices *
+process.pvSortingSequence *
+process.sortedGoodOfflinePrimaryVertices *
+process.inclusiveVertexing *
+#process.inclusiveMergedVerticesFiltered *
+#process.bToCharmDecayVertexMerged *
+process.myak5JetTracksAssociatorAtVertex *
+process.impactParameterTagInfos *
 process.inclusiveSecondaryVertexFinderTagInfos *
 process.selectedHadronsAndPartons *
 process.jetFlavourInfosAK5PFJets *
-process.combinedSVMVATrainer 
-)
-
- 
+process.combinedSVMVATrainer
+) 
