@@ -41,7 +41,7 @@ process.siPixelClusters = cms.EDProducer("JetCoreClusterSplitter",
     pixelClusters         = cms.InputTag("siPixelClusters","","RECO"),
     vertices              = cms.InputTag('offlinePrimaryVertices',"","RECO"),
     pixelCPE = cms.string( "PixelCPEGeneric" ),
-    verbose     = cms.bool(True),
+    verbose     = cms.bool(False),
 
     )
 

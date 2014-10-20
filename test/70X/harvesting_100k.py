@@ -40,13 +40,15 @@ process.options = cms.untracked.PSet(
 from DQMOffline.RecoB.bTagCommon_cff import*
 process.load("DQMOffline.RecoB.bTagCommon_cff")
 #process.bTagCommonBlock.ptRecJetMin = cms.double(600.0)
-process.bTagValidation.ptRanges = cms.vdouble(0.0,40.0,60.0,90.0, 150.0,400.0,600.0,3000.0)
-process.bTagValidation.etaRanges = cms.vdouble(0.0, 1.2, 2.1, 2.4)
 
 ###############################################################################################
 
 from Validation.RecoB.bTagAnalysis_cfi import *
 process.load("Validation.RecoB.bTagAnalysis_cfi")
+process.bTagValidation.ptRanges = cms.vdouble(0.0,40.0,60.0,90.0, 150.0,400.0,600.0,3000.0)
+process.bTagValidation.etaRanges = cms.vdouble(0.0, 1.2, 2.1, 2.4)
+process.bTagValidation.doPUid = cms.bool(True)
+process.bTagValidation.flavPlots = cms.string("alldusg")
 
 process.CustombTagValidation = process.bTagValidation.clone(
 tagConfig = cms.VPSet(
