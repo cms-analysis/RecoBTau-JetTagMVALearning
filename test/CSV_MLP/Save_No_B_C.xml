@@ -34,19 +34,7 @@
 		<var name="jetNTracks" multiple="false" optional="false"/>
 		<var name="trackSip2dValAboveCharm" multiple="false" optional="false"/>
 		<var name="trackSip3dValAboveCharm" multiple="false" optional="false"/>
-		<var name="chargedHadronEnergyFraction" multiple="false" optional="false"/>
-		<var name="neutralHadronEnergyFraction" multiple="false" optional="false"/>
-		<var name="photonEnergyFraction" multiple="false" optional="false"/>
-		<var name="electronEnergyFraction" multiple="false" optional="false"/>
-		<var name="muonEnergyFraction" multiple="false" optional="false"/>
-		<var name="chargedHadronMultiplicity" multiple="false" optional="false"/>
-		<var name="neutralHadronMultiplicity" multiple="false" optional="false"/>
-		<var name="photonMultiplicity" multiple="false" optional="false"/>
-		<var name="electronMultiplicity" multiple="false" optional="false"/>
-		<var name="muonMultiplicity" multiple="false" optional="false"/>
-		<var name="hadronMultiplicity" multiple="false" optional="false"/>
-		<var name="hadronPhotonMultiplicity" multiple="false" optional="false"/>
-		<var name="totalMultiplicity" multiple="false" optional="false"/> 
+		
 	</input>
 	<processor id="category" name="ProcCategory">
 		<input>
@@ -110,19 +98,6 @@
 			<var source="input" name="jetNTracks"/>
 			<var source="input" name="trackSip2dValAboveCharm"/>
 			<var source="input" name="trackSip3dValAboveCharm"/>
-			<var source="input" name="chargedHadronEnergyFraction"/>
-			<var source="input" name="neutralHadronEnergyFraction"/>
-			<var source="input" name="photonEnergyFraction"/>
-			<var source="input" name="electronEnergyFraction"/>
-			<var source="input" name="muonEnergyFraction"/>
-			<var source="input" name="chargedHadronMultiplicity"/>
-			<var source="input" name="neutralHadronMultiplicity"/>
-			<var source="input" name="photonMultiplicity"/>
-			<var source="input" name="electronMultiplicity"/>
-			<var source="input" name="muonMultiplicity"/>
-			<var source="input" name="hadronMultiplicity"/>
-			<var source="input" name="hadronPhotonMultiplicity"/>
-			<var source="input" name="totalMultiplicity"/>
 			<var source="category" name="category"/>
 			<var source="count" name="nTracks"/>
 		</input>
