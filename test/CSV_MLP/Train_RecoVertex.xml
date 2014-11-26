@@ -39,19 +39,6 @@
 		<var name="trackSip2dValAboveCharm" multiple="false" optional="false"/>
 		<var name="trackSip3dValAboveCharm" multiple="false" optional="false"/>
 		<var name="vertexFitProb" multiple="false" optional="false"/>
-		<var name="chargedHadronEnergyFraction" multiple="false" optional="false"/>
-		<var name="neutralHadronEnergyFraction" multiple="false" optional="false"/>
-		<var name="photonEnergyFraction" multiple="false" optional="false"/>
-		<var name="electronEnergyFraction" multiple="false" optional="false"/>
-		<var name="muonEnergyFraction" multiple="false" optional="false"/>
-		<var name="chargedHadronMultiplicity" multiple="false" optional="false"/>
-		<var name="neutralHadronMultiplicity" multiple="false" optional="false"/>
-		<var name="photonMultiplicity" multiple="false" optional="false"/>
-		<var name="electronMultiplicity" multiple="false" optional="false"/>
-		<var name="muonMultiplicity" multiple="false" optional="false"/>
-		<var name="hadronMultiplicity" multiple="false" optional="false"/>
-		<var name="hadronPhotonMultiplicity" multiple="false" optional="false"/>
-		<var name="totalMultiplicity" multiple="false" optional="false"/>
 		<var name="massVertexEnergyFraction" multiple="false" optional="false"/>
 		<var name="vertexBoostOverSqrtJetPt" multiple="false" optional="false"/>
 		<var name="nTracks" multiple="true" optional="true"/>
