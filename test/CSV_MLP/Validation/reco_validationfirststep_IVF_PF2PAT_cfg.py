@@ -166,7 +166,7 @@ label = cms.untracked.string('AK4PFchs')
 ## here you add as many jet types as you need
 ## note that the tag name is specific for the particular sqlite file
 ),
-connect = cms.string('sqlite_fip:RecoBTau/JetTagMVALearning/test/62XSLHC/' + jec + '.db')
+connect = cms.string('sqlite_fip:RecoBTau/JetTagMVALearning/data/' + jec + '.db')
 )
 ## add an es_prefer statement to resolve a possible conflict from simultaneous connection to a global tag
 process.es_prefer_jec = cms.ESPrefer('PoolDBESSource','jec')
