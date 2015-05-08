@@ -22,9 +22,9 @@ void paint(TString dir, TString a)
 //	histo = new TH2D("jets", "jets", 50, -2.5, 2.5, 40, 4.7004803657924166, 6.404803657924166);
 //	TH2D * histo = new TH2D("jets", "jets", 25, -2.5, 2.5, 20, 4.0943445622221004, 6.1943445622221004); 
 //	TH2D * histo = new TH2D("jets", "jets", 50, -2.5, 2.5, 40, 4.0943445622221004, 6.1943445622221004);//original
-	TH2D * histo = new TH2D("jets", "jets", 50, -2.5, 2.5, 40, 4.17438727, 6.95654544315);//pt starting from 15 and until 1000
+//	TH2D * histo = new TH2D("jets", "jets", 50, -2.4, 2.4, 40, 4.17438727, 6.95654544315);//pt starting from 15 and until 1000
 //	TH2D * histo = new TH2D("jets", "jets", 50, -2.5, 2.5, 40, 4.0943445622221004, 7.8);
-	histo->SetDirectory(direc);
+//	histo->SetDirectory(direc);
 
 	//the varexp part of the draw syntax means: draw log(jetPt+50) versus jetEta and append the existing ("+" -> avoid recreation) histogram called "jets"
 	//selection is an expression with a combination of the Tree variables -> no selection applied in this case ""
@@ -33,17 +33,17 @@ void paint(TString dir, TString a)
 	t->Draw("log(jetPt+50):jetEta >> +jets", "", "Lego goff");
 	//std::cout <<"jetPt " << log(jetPt+50) << " and jetEta " << jetEta << std::endl;
 
-  TH2D * histo_lin = new TH2D("jets_lin", "jets_lin", 50, -2.5, 2.5, 40, 15, 1000);//pt starting from 15 and until 1000
+  TH2D * histo_lin = new TH2D("jets_lin", "jets_lin", 50, -2.4, 2.4, 40, 20, 1000);//pt starting from 15 and until 1000
 	t->Draw("jetPt:jetEta >> +jets_lin", "", "Lego goff");
 	
 	std::cout << "saving the histograms: " << a + "_histo.root" << std::endl;
 	TFile g(a + "_histo.root", "RECREATE");
-	histo->SetDirectory(&g);
+	//histo->SetDirectory(&g);
 	histo_lin->SetDirectory(&g);
 	delete direc;
 
 	g.cd();
-	histo->Write();
+	//histo->Write();
 	histo_lin->Write();
 	g.Close();
 
