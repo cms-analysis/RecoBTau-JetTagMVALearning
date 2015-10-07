@@ -325,6 +325,19 @@ JetTagMVAExtractor::JetTagMVAExtractor(const edm::ParameterSet &params) :
 
 	for(std::vector<std::string>::const_iterator iter = inputTags.begin(); iter != inputTags.end(); iter++)
 		tagInfoLabels[*iter] = params.getParameter<edm::InputTag>(*iter);
+
+	
+	//added to make sure all trees are created beforehand; crab3 can deal with empty files better than no files, when the list of files to be staged out is forced in the crab3 config
+	const int nflavours = 6; 
+	int flavours[nflavours] = {1,2,3,4,5,21}; //pdg ids
+	for(int cat=0; cat<int(labels.size()); cat++)
+	{
+	  for(int flav=0; flav<nflavours; flav++)
+		{
+	    treeMap.insert(std::make_pair(Index(flavours[flav], cat), boost::shared_ptr<Tree>(new Tree(*this, Index(flavours[flav], cat)))));
+		}
+	}
+
 }
 
 JetTagMVAExtractor::~JetTagMVAExtractor()
